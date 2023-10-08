@@ -18,13 +18,14 @@ public:
 		this->nodeCount = nodeCount;
 		adj = vector<vector<pair<int, int>>>(nodeCount + 1); // assuming nodes start from 1
 	}
-	virtual void addEdge(int node1, int node2) = 0;
+	virtual void addEdge(int node1, int node2, int weight) = 0;
 	virtual bool isCyclic() = 0;
 	virtual vector<vector<int>> ListToMatrix() = 0;
 	vector<int> dfsTraversal(int source);
 	vector<int> bfsTraversal(int source);
 };
 
+// function for Depth-First Search traversal of the graph
 vector<int> Graph::dfsTraversal(int source)
 {
 	vector<int> nodesDiscovered;
@@ -44,11 +45,11 @@ vector<int> Graph::dfsTraversal(int source)
 			}
 		}
 	};
-
 	dfsHelper(source);
 	return nodesDiscovered;
 }
 
+// function for Breadth-First Search traversal of the graph
 vector<int> Graph::bfsTraversal(int source)
 {
 	vector<int> nodesDiscovered;
@@ -72,7 +73,6 @@ vector<int> Graph::bfsTraversal(int source)
 			}
 		}
 	}
-
 	return nodesDiscovered;
 }
 
