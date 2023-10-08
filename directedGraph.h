@@ -23,6 +23,7 @@ public:
 
 private:
     bool cycleDetectionHelper(int node, vector<int> &visited, vector<int> &recStack);
+    vector<int> getIndegree();
 };
 
 // function to convert from adjacency list to adjacency matrix
@@ -37,7 +38,6 @@ vector<vector<int>> directedGraph::ListToMatrix()
             adjMatrix[i][adj[i][j].first] = adj[i][j].second;
         }
     }
-    // return the adjacency matrix
     return adjMatrix;
 }
 
@@ -91,11 +91,50 @@ bool directedGraph::isCyclic()
         {
             if (cycleDetectionHelper(node, visited, recStack) == true)
             {
-                return true; // cycle detected
+                return true;
             }
         }
     }
-    return false; // cycle not detected
+    return false;
+}
+
+// function to get the topological sort of the graph (kahn's algorithm)
+vector<int> directedGraph::topologicalSort()
+{
+    bool cycle = isCyclic();
+    vector<int> topoOrder;
+    if (cycle == true)
+    {
+        cout << "Graph is cyclic and hence no topological order possible";
+        return topoOrder;
+    }
+    int numberOfNodes = this->nodeCount;
+    vector<int> inDegree = getIndegree();
+    queue<int> nodesInQueue;
+    for (int node = 1; node <= numberOfNodes; node++)
+    {
+        if (inDegree[node] == 0)
+        {
+            nodesInQueue.push(node);
+        }
+    }
+
+    while (nodesInQueue.empty() == false)
+    {
+        int frontNode = nodesInQueue.front();
+        nodesInQueue.pop();
+        topoOrder.push_back(frontNode);
+        for (pair<int, int> neighbours : adj[frontNode])
+        {
+            int neighbour = neighbours.first;
+            inDegree[neighbour]--;
+            if (inDegree[neighbour] == 0)
+            {
+                nodesInQueue.push(neighbour);
+            }
+        }
+    }
+    return topoOrder;
 }
 
 #endif
