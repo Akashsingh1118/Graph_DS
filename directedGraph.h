@@ -19,6 +19,7 @@ public:
     }
     virtual vector<vector<int>> ListToMatrix();
     directedGraph Transpose();
+    vector<int> topologicalSort();
 
 private:
     bool cycleDetectionHelper(int node, vector<int> &visited, vector<int> &recStack);
