@@ -10,7 +10,7 @@ class directedGraph : public Graph
 public:
     directedGraph(int nodeCount) : Graph(nodeCount)
     {
-        // this will inherit the constructor of the parent class (Graph)
+        // inherit the constructor of the parent class (Graph)
     }
     virtual bool isCyclic();
     virtual void addEdge(int node1, int node2, int weight = 1)
