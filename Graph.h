@@ -1,7 +1,6 @@
 // header guards
 #ifndef GRAPH_H
 #define GRAPH_H
-
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -32,7 +31,7 @@ vector<int> Graph::dfsTraversal(int source)
 	vector<int> nodesDiscovered;
 	vector<bool> visited(nodeCount + 1, false);
 
-	// lambda function for doing depth first search
+	// helper function for doing depth first search
 	function<void(int)> dfsHelper = [&](int node)
 	{
 		visited[node] = true;

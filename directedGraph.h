@@ -1,6 +1,5 @@
 #ifndef DIRECTEDGRAPH_H
 #define DIRECTEDGRAPH_H
-
 #include "Graph.h"
 #include <bits/stdc++.h>
 using namespace std;
@@ -28,6 +27,21 @@ private:
     int getNumberOfNodes();
 };
 
+// function to get the indegree value for all the nodes
+vector<int> directedGraph::getIndegree()
+{
+    int numberOfNodes = getNumberOfNodes();
+    vector<int> inDegree(numberOfNodes + 1);
+    for (int node = 1; node <= numberOfNodes; node++)
+    {
+        for (pair<int, int> neighbours : adj[node])
+        {
+            int neighbour = neighbours.first;
+            inDegree[neighbour]++;
+        }
+    }
+    return inDegree;
+}
 // function to get the number of nodes
 int directedGraph::getNumberOfNodes()
 {
@@ -107,7 +121,7 @@ bool directedGraph::cycleDetectionHelper(int node, vector<int> &visited, vector<
                 return true;
             }
         }
-        else if (recStack[node] == true)
+        else if (recStack[neighbour] == true)
         {
             return true;
         }

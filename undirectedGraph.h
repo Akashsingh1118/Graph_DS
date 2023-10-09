@@ -1,6 +1,5 @@
 #ifndef UNDIRECTEDGRAPH_H
 #define UNDIRECTEDGRAPH_H
-
 #include "Graph.h"
 #include <bits/stdc++.h>
 using namespace std;
@@ -63,6 +62,10 @@ bool undirectedGraph::cycleDetectionHelper(int node, int parent, vector<int> &vi
             {
                 return true;
             }
+        }
+        else if (neighbour != parent)
+        {
+            return true;
         }
     }
     return false;
