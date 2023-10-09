@@ -1,6 +1,6 @@
 // header guards
-#ifndef GRAPHLIB_H
-#define GRAPHLIB_H
+#ifndef GRAPH_H
+#define GRAPH_H
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -21,6 +21,7 @@ public:
 	virtual void addEdge(int node1, int node2, int weight) = 0;
 	virtual bool isCyclic() = 0;
 	virtual vector<vector<int>> ListToMatrix() = 0;
+	virtual void showGraph() = 0;
 	vector<int> dfsTraversal(int source);
 	vector<int> bfsTraversal(int source);
 };

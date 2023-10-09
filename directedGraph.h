@@ -18,24 +18,60 @@ public:
         adj[node1].push_back({node2, weight});
     }
     virtual vector<vector<int>> ListToMatrix();
+    virtual void showGraph();
     directedGraph Transpose();
     vector<int> topologicalSort();
 
 private:
     bool cycleDetectionHelper(int node, vector<int> &visited, vector<int> &recStack);
     vector<int> getIndegree();
+    int getNumberOfNodes();
 };
+
+// function to get the number of nodes
+int directedGraph::getNumberOfNodes()
+{
+    return this->nodeCount;
+}
+
+// function to print the graph with edges
+void directedGraph::showGraph()
+{
+    int numberOfNodes = getNumberOfNodes();
+
+    for (int node = 1; node <= numberOfNodes; node++)
+    {
+        for (pair<int, int> neighbours : adj[node])
+        {
+            int neighbour = neighbours.first;
+            int weight = neighbours.second;
+            cout << node << " ----> "
+                 << "{" << neighbour << " , " << weight << "}"
+                 << "\n";
+        }
+    }
+}
 
 // function to convert from adjacency list to adjacency matrix
 vector<vector<int>> directedGraph::ListToMatrix()
 {
+    int numberOfNodes = getNumberOfNodes();
 
-    vector<vector<int>> adjMatrix(nodeCount + 1, vector<int>(nodeCount + 1));
-    for (int i = 1; i <= nodeCount; i++)
+    // adjMatrix vector can be initialised with some non-permissible weight value so that there is clear distiction-
+    // between the nodes which have and edge
+    // in case of an unweighted graph , can be filled with 0
+    // in case of positive weighted graph , can be filled with -1
+    // in case of negative weighted graph , can be filled with some large negative value or large positive value
+    // here dummy value used is -1e9
+    vector<vector<int>> adjMatrix(numberOfNodes + 1, vector<int>(numberOfNodes + 1, -1e9));
+
+    for (int node = 1; node <= numberOfNodes; node++)
     {
-        for (int j = 0; j < adj[i].size(); j++)
+        for (pair<int, int> neighbours : adj[node])
         {
-            adjMatrix[i][adj[i][j].first] = adj[i][j].second;
+            int neighbour = neighbours.first;
+            int weight = neighbours.second;
+            adjMatrix[node][neighbour] = weight;
         }
     }
     return adjMatrix;
@@ -44,8 +80,9 @@ vector<vector<int>> directedGraph::ListToMatrix()
 // function to get the transpose of the graph
 directedGraph directedGraph::Transpose()
 {
-    directedGraph graphPrime(nodeCount);
-    for (int node = 1; node <= nodeCount; node++)
+    int numberOfNodes = getNumberOfNodes();
+    directedGraph graphPrime(numberOfNodes);
+    for (int node = 1; node <= numberOfNodes; node++)
     {
         for (pair<int, int> p : adj[node])
         {
@@ -55,7 +92,7 @@ directedGraph directedGraph::Transpose()
     return graphPrime;
 }
 
-// function for detecting cycle
+// helper function for detecting cycle
 bool directedGraph::cycleDetectionHelper(int node, vector<int> &visited, vector<int> &recStack)
 {
     visited[node] = true;
@@ -82,7 +119,7 @@ bool directedGraph::cycleDetectionHelper(int node, vector<int> &visited, vector<
 // function to check whether the graph contains cycle or not
 bool directedGraph::isCyclic()
 {
-    int numberOfNodes = this->nodeCount;
+    int numberOfNodes = getNumberOfNodes();
     vector<int> visited(numberOfNodes + 1, false);
     vector<int> recStack(numberOfNodes + 1, false);
     for (int node = 1; node <= numberOfNodes; node++)
@@ -108,7 +145,7 @@ vector<int> directedGraph::topologicalSort()
         cout << "Graph is cyclic and hence no topological order possible";
         return topoOrder;
     }
-    int numberOfNodes = this->nodeCount;
+    int numberOfNodes = getNumberOfNodes();
     vector<int> inDegree = getIndegree();
     queue<int> nodesInQueue;
     for (int node = 1; node <= numberOfNodes; node++)
